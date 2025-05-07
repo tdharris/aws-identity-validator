@@ -21,6 +21,37 @@ When deployed, AWS Identity Validator:
 3. Attempts to authenticate with AWS using SDK v2
 4. Reports detailed identity information from both SDK versions
 
+### Example Output
+
+```console
+AWS Identity Validator
+===========================
+
+[IRSA Environment Check]
+✓ AWS_WEB_IDENTITY_TOKEN_FILE env var is set: /var/run/secrets/eks.amazonaws.com/serviceaccount/token
+✓ Token file exists
+✓ Token file size: 1246 bytes
+✓ AWS_ROLE_ARN env var is set: arn:aws:iam::<account-id>:role/<role-name>
+
+[AWS SDK v1]
+✓ Successfully authenticated with AWS SDK v1
+Account ID: <account-id>
+User ID: <user-id>:<session-id>
+ARN: arn:aws:sts::<account-id>:assumed-role/<role-name>/<session-id>
+Provider: WebIdentityCredentials
+Access Key ID: <access-key-id>
+Using temporary credentials (has session token)
+
+[AWS SDK v2]
+✓ Successfully authenticated with AWS SDK v2
+Account ID: <account-id>
+User ID: <user-id>:<session-id>
+ARN: arn:aws:sts::<account-id>:assumed-role/<role-name>/<session-id>
+Provider: WebIdentityCredentials
+Access Key ID: <access-key-id>
+Using temporary credentials (has session token)
+```
+
 ## Deployment
 
 ### Prerequisites
