@@ -72,7 +72,7 @@ ECR_PASSWORD=$(aws ecr get-login-password --region "${AWS_REGION}")
 
 # Using Skopeo to sync the image to ECR
 echo "🚀 Copying image to ECR using Skopeo..."
-skopeo copy \
+skopeo --insecure-policy copy \
     --dest-creds "AWS:${ECR_PASSWORD}" \
     "docker-daemon:${LOCAL_IMAGE_NAME}" \
     "docker://${ECR_IMAGE}"
