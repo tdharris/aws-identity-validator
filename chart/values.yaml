@@ -1,0 +1,21 @@
+image:
+  repository: aws-identity-validator
+  tag: latest
+  pullPolicy: IfNotPresent
+
+serviceAccount:
+  name: aws-identity-validator
+  annotations:
+    eks.amazonaws.com/role-arn: "arn:aws:iam::<ACCOUNT_ID>:role/<ROLE_NAME>"
+
+aws:
+  region: us-east-2
+
+# Optional environment variables to pass to the container
+env: []
+# - name: ENV_VAR_NAME
+#   value: env_var_value
+
+# Job configuration
+job:
+  backoffLimit: 0  # Number of retries before considering job as failed

@@ -1,0 +1,33 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: aws-identity-validator
+  labels:
+    app.kubernetes.io/name: aws-identity-validator
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+spec:
+  ttlSecondsAfterFinished: 600  # Auto-cleanup after 10 minutes
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: aws-identity-validator
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      serviceAccountName: {{ .Values.serviceAccount.name }}
+      containers:
+      - name: aws-identity-validator
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        env:
+        - name: AWS_REGION
+          value: {{ .Values.aws.region }}
+        {{ if .Values.env }}
+        {{- range .Values.env }}
+        - name: {{ .name }}
+          value: {{ .value | quote }}
+        {{- end }}
+        {{ end }}
+      restartPolicy: Never
+  backoffLimit: {{ .Values.job.backoffLimit | default 0 }}
